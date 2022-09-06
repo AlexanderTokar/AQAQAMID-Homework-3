@@ -41,4 +41,15 @@ public class CardOrderTest {
         String text = driver.findElement(By.className("paragraph_theme_alfa-on-white")).getText();
         assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
     }
+
+    @Test
+    public void shouldSubmitRequestHappyPathUseSelectors() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[type=\"text\"]")).sendKeys("Джон Голт");
+        driver.findElement(By.cssSelector("[type=\"tel\"]")).sendKeys("+79109101111");
+        driver.findElement(By.className("checkbox__box")).click();
+        driver.findElement(By.className("button__text")).click();
+        String text = driver.findElement(By.className("paragraph_theme_alfa-on-white")).getText();
+        assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text);
+    }
 }
