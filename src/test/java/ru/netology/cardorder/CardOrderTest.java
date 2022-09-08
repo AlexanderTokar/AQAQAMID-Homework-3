@@ -24,6 +24,7 @@ public class CardOrderTest {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999");
     }
 
     @AfterEach
@@ -31,25 +32,24 @@ public class CardOrderTest {
         driver.quit();
     }
 
+
     @Test
     public void shouldSubmitRequestHappyPath() {
-        driver.get("http://localhost:9999");
-        driver.findElement(By.name("name")).sendKeys("Джон Голт");
-        driver.findElement(By.name("phone")).sendKeys("+79109101111");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button__text")).click();
-        String text = driver.findElement(By.className("paragraph_theme_alfa-on-white")).getText();
-        assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Джон Голт");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79109101111");
+        driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
+        driver.findElement(By.tagName("button")).click();
+        String text = driver.findElement(By.cssSelector("[data-test-id='order-success']")).getText();
+        assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее времяя.", text.trim());
     }
 
     @Test
-    public void shouldSubmitRequestHappyPathUseSelectors() {
-        driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[type=\"text\"]")).sendKeys("Джон Голт");
-        driver.findElement(By.cssSelector("[type=\"tel\"]")).sendKeys("+79109101111");
-        driver.findElement(By.cssSelector(".checkbox__box")).click();
-        driver.findElement(By.cssSelector(".button__text")).click();
-        String text = driver.findElement(By.className("paragraph_theme_alfa-on-white")).getText();
+    public void shouldSubmitRequestHappyPathDoubleLastName() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Джон Голт-Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79109101111");
+        driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
+        driver.findElement(By.tagName("button")).click();
+        String text = driver.findElement(By.cssSelector("[data-test-id='order-success']")).getText();
         assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
     }
 }
