@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -101,5 +102,15 @@ public class CardOrderTest {
         driver.findElement(By.tagName("button")).click();
         String text = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub")).getText();
         assertEquals("Поле обязательно для заполнения", text.trim());
+    }
+
+    @Test
+    public void shouldNotSubmitRequestCheckboxOff() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Джон Голт-Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79109101111");
+        driver.findElement(By.cssSelector("[data-test-id='agreement']"));
+        driver.findElement(By.tagName("button")).click();
+        WebElement checkbox = driver.findElement(By.cssSelector("[data-test-id='agreement'].input_invalid .checkbox__control"));
+        Assertions.assertFalse(checkbox.isSelected());
     }
 }
